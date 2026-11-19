@@ -1,29 +1,24 @@
 # Prismatic Menu
 
-A prism-themed, cross-platform Geometry Dash menu mod for Geode.
+A prism-themed Geometry Dash utility and interface mod for Geode.
 
-## Targets
-- Windows
-- Android
-- Geometry Dash 2.208
+## Supported targets
+- Windows 64-bit
+- Android ARMv7 (32-bit)
+- Android ARM64 (64-bit)
 
-## Current status
-- Initial project scaffold
-- Main-menu entry button
-- Placeholder popup
-
-## Planned UI
-- Category navigation
-- Search
-- Toggle and slider controls
-- UI customization (scale, opacity, accent color)
-- Visual options and profile presets
+## Current features
+- In-game entry point on the main menu
+- Dashboard, Visuals, Performance and Interface pages
+- Persistent settings using Geode saved values
+- FPS statistics toggle
+- Violet / cyan accent selection
+- Compact menu layout
+- Optional page descriptions
 
 ## Build
-Install the Geode SDK and configure your development environment, then run:
+This repository uses the official Geode SDK CMake integration and the Geode build action.
+Pushes to `main` automatically build Windows, Android32 and Android64 packages.
 
-```sh
-geode build
-```
-
-For Android, install the Android SDK/NDK and Geode Android binaries, then build with the appropriate `-p android64` or `-p android32` target.
+## Important
+This is an early development build. Features are being added and tested incrementally; a successful build does not mean every planned feature is already implemented.
