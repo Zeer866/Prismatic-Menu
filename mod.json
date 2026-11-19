@@ -1,0 +1,18 @@
+{
+  "geode": "v4.0.0",
+  "gd": {
+    "win": "2.208",
+    "android": "2.208"
+  },
+  "id": "zeer.prismatic-menu",
+  "name": "Prismatic Menu",
+  "version": "v0.1.0",
+  "developer": "Zeer",
+  "description": "A customizable, prism-themed settings hub for Geometry Dash.",
+  "tags": [
+    "interface",
+    "customization",
+    "utility"
+  ],
+  "dependencies": []
+}
