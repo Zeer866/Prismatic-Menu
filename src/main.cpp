@@ -27,25 +27,6 @@ class PrismaticMenuPopup : public Popup<> {
         return savedBool("warm-accent", false) ? cc3b(80, 205, 255) : cc3b(180, 125, 255);
     }
 
-    void addOption(char const* title, char const* key, char const* help, bool fallback) {
-        bool enabled = savedBool(key, fallback);
-        auto label = CCLabelBMFont::create(
-            fmt::format("{}  <{}>", title, enabled ? "ON" : "OFF").c_str(),
-            "bigFont.fnt"
-        );
-        if (!label) return;
-        label->setScale(.43f);
-        label->setAnchorPoint({0.f, .5f});
-        label->setColor(enabled ? accent() : cc3b(145, 150, 165));
-
-        auto item = CCMenuItemLabel::create(label, this, menu_selector(PrismaticMenuPopup::onOption));
-        item->setTag(static_cast<int>(std::hash<std::string>{}(key) & 0x7fffffff));
-        item->setID(key);
-        item->setUserObject(CCString::create(help));
-        item->setPosition({0.f, 0.f});
-        m_options->addChild(item);
-    }
-
     void rebuildOptions() {
         m_options->removeAllChildrenWithCleanup(true);
         float y = 28.f;
@@ -62,8 +43,10 @@ class PrismaticMenuPopup : public Popup<> {
             label->setAnchorPoint({0.f, .5f});
             label->setColor(enabled ? accent() : cc3b(145, 150, 165));
             auto item = CCMenuItemLabel::create(label, this, menu_selector(PrismaticMenuPopup::onOption));
-            item->setID(key);
-            item->setUserObject(CCString::create(help));
+            static char const* keys[] = {"fps-counter", "compact-layout", "show-descriptions", "warm-accent"};
+            int optionTag = 0;
+            for (int i = 0; i < 4; ++i) if (std::string(keys[i]) == key) optionTag = i;
+            item->setTag(optionTag);
             item->setPosition({-125.f, y});
             m_options->addChild(item);
             y -= gap;
@@ -111,20 +94,21 @@ class PrismaticMenuPopup : public Popup<> {
     void onOption(CCObject* sender) {
         auto item = typeinfo_cast<CCMenuItemLabel*>(sender);
         if (!item) return;
-        auto key = item->getID();
-        if (key.empty()) return;
-
-        bool current = savedBool(key.c_str(), key == "show-descriptions");
+        static char const* keys[] = {"fps-counter", "compact-layout", "show-descriptions", "warm-accent"};
+        int tag = item->getTag();
+        if (tag < 0 || tag > 3) return;
+        auto key = keys[tag];
+        bool current = savedBool(key, tag == 2);
         bool next = !current;
-        saveBool(key.c_str(), next);
+        saveBool(key, next);
 
-        if (key == "fps-counter") {
+        if (tag == 0) {
             CCDirector::sharedDirector()->setDisplayStats(next);
         }
-        if (key == "warm-accent") {
+        if (tag == 3) {
             m_pageTitle->setColor(accent());
         }
-        if (key == "show-descriptions") {
+        if (tag == 2) {
             setPage(m_page);
             return;
         }
